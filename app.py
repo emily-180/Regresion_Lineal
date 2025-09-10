@@ -14,18 +14,17 @@ def index():
 
 @app.route("/lr", methods=["GET"])
 def lr_form():
-    grafico = regressionLinear.generarGrafico()
-    return render_template("lr.html", grafico=grafico)
+    return render_template("lr.html", grafico=None, result=None)
 
 @app.route("/lr", methods=["POST"])
 def lr_result():
-    calculateResult = None
-    if request.method == "POST":
-        cantidad = float(request.form["cantidad"])
-        costo = float(request.form["costo"])
-        calculateResult = regressionLinear.calcularPrecio(cantidad, costo)
-    grafico = regressionLinear.generarGrafico()
+    cantidad = float(request.form["cantidad"])
+    costo = float(request.form["costo"])
+    calculateResult = regressionLinear.calcularPrecio(cantidad, costo)
+    grafico = regressionLinear.generarGrafico(cantidad, costo, calculateResult)
+
     return render_template("lr.html", result=calculateResult, grafico=grafico)
+
 
 @app.route("/conceptos")
 def conceptos():
