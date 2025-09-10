@@ -22,12 +22,10 @@ def calcularPrecio(cantidad, costo):
     result = model.predict([[cantidad, costo]])[0]
     return result
 
-def generarGrafico():
-    costo_fijo = df["Costo_Transporte"].mean()
-
+def generarGrafico(cantidad, costo, prediccion):
     X_plot = pd.DataFrame({
         "Cantidad_Producida": range(100, 600, 50),
-        "Costo_Transporte": [costo_fijo] * 10
+        "Costo_Transporte": [costo] * 10
     })
 
     y_pred = model.predict(X_plot)
@@ -35,9 +33,12 @@ def generarGrafico():
     plt.figure(figsize=(7, 5))
     plt.scatter(df["Cantidad_Producida"], y, color="blue", label="Datos reales")
     plt.plot(X_plot["Cantidad_Producida"], y_pred, color="red", linewidth=2, label="Línea de regresión")
+
+    plt.scatter(cantidad, prediccion, color="green", s=100, marker="X", label="Predicción")
+
     plt.xlabel("Cantidad producida (kg)")
     plt.ylabel("Precio de la fruta (USD)")
-    plt.title("Regresión Lineal (con costo promedio)")
+    plt.title("Regresión Lineal (predicción dinámica)")
     plt.legend()
     plt.tight_layout()
 
